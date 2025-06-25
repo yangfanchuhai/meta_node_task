@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"strings"
+)
 
 //只出现一次数字
 
@@ -44,12 +47,39 @@ func isPalindrome(x int) bool {
 	}
 
 	fmt.Println("reverse:", reverse)
-
 	return fx == reverse
 
 }
 
+func validStr(str string) bool {
+	prefix := "({["
+	//suffix := ")}]"
+
+	m := make(map[byte]byte)
+	m[byte('(')] = byte(')')
+	m[byte('{')] = byte('}')
+	m[byte('[')] = byte(']')
+	stack := []byte{}
+
+	for _, s := range str {
+		if strings.Contains(prefix, string(s)) {
+			stack = append(stack, byte(s))
+		} else {
+			if len(stack) == 0 {
+				return false
+			}
+
+			if m[stack[len(stack)-1]] != byte(s) {
+				return false
+			}
+			stack = stack[:len(stack)-1]
+		}
+	}
+
+	return len(stack) == 0
+}
+
 func main() {
-	b := isPalindrome(11211)
-	fmt.Println(b)
+	s := "([){})"
+	fmt.Println(validStr(s))
 }
