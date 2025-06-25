@@ -79,7 +79,22 @@ func validStr(str string) bool {
 	return len(stack) == 0
 }
 
+// 最长公共前缀
+func longestCommonPrefix(strs []string) string {
+	commonPrefixSlice := []uint8{}
+	for i := 0; i < len(strs[0]); i++ {
+		char := strs[0][i]
+		for j := 1; j < len(strs); j++ {
+			if i >= len(strs[j]) || strs[j][i] != char {
+				return string(commonPrefixSlice)
+			}
+		}
+		commonPrefixSlice = append(commonPrefixSlice, char)
+	}
+	return string(commonPrefixSlice)
+}
+
 func main() {
-	s := "([){})"
-	fmt.Println(validStr(s))
+	strings := []string{"flower", "afjlow", ""}
+	fmt.Println(longestCommonPrefix(strings))
 }
