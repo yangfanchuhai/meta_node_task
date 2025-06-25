@@ -94,7 +94,26 @@ func longestCommonPrefix(strs []string) string {
 	return string(commonPrefixSlice)
 }
 
+// 加一
+func plusOne(digits []int) []int {
+	addNum := 1
+	for i := len(digits) - 1; i >= 0; i-- {
+		if addNum == 0 {
+			break
+		}
+
+		nowNum := digits[i] + addNum
+		digits[i] = nowNum % 10
+		addNum = nowNum / 10
+	}
+
+	if addNum != 0 {
+		digits = append([]int{addNum}, digits...)
+	}
+	return digits
+}
+
 func main() {
-	strings := []string{"flower", "afjlow", ""}
-	fmt.Println(longestCommonPrefix(strings))
+	digNum := []int{9, 0, 9}
+	fmt.Println(plusOne(digNum))
 }
