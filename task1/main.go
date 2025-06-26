@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"sort"
 	"strings"
 )
 
@@ -113,7 +114,57 @@ func plusOne(digits []int) []int {
 	return digits
 }
 
+// 删除排序数组中的重复项
+func removeDuplicates(nums []int) int {
+	var i, j int
+	i = 0
+	j = 1
+	for ; j < len(nums); j++ {
+		if nums[i] != nums[j] {
+			i++
+			nums[i] = nums[j]
+		}
+	}
+	return i + 1
+}
+
+// 两数之和，时间复杂度仅为o(n)，充分利用map数据结构的hash feature，以时间换空间，空间复杂度为o(n)
+func twoSum(nums []int, target int) []int {
+	m := make(map[int]int)
+	for i := 0; i < len(nums); i++ {
+		otherNum := target - nums[i]
+		if v, ok := m[otherNum]; ok {
+			return []int{v, otherNum}
+		} else {
+			m[nums[i]] = target - nums[i]
+		}
+	}
+	return []int{}
+}
+
+// 合并区间
+func merge(intervals [][]int) [][]int {
+	// 排序
+	sort.Slice(intervals, func(i, j int) bool {
+		return intervals[i][0] < intervals[j][0]
+	})
+	var res [][]int = [][]int{}
+	var cur []int = intervals[0]
+	//res = append(res, cur)
+	for i := 1; i < len(intervals); i++ {
+		if cur[1] >= intervals[i][0] {
+			cur[1] = max(cur[1], intervals[i][1])
+		} else {
+			res = append(res, cur)
+			cur = intervals[i]
+		}
+	}
+	res = append(res, cur)
+	return res
+}
+
 func main() {
-	digNum := []int{9, 0, 9}
-	fmt.Println(plusOne(digNum))
+	intervals := [][]int{{1, 4}, {4, 5}}
+	res := merge(intervals)
+	fmt.Println(res)
 }
